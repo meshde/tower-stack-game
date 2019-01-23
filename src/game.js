@@ -28,20 +28,32 @@ class Game {
     for (let key in this.STATES) {
       this.mainContainer.classList.remove(this.STATES[key]);
     }
-    this.mainContainer.classList.add(this.STATES.READY);
+    this.setState(this.STATES.READY);
 
 		document.addEventListener('keydown', e => {
 			if(e.keyCode === 32) { // Enter
-        // TODO
+				// TODO
+				this.setState(this.STATES.PLAYING);
       }
 		});
 
 		document.addEventListener('click', e => {
 			// TODO
+			switch (this.state) {
+				case this.STATES.READY:
+					this.setState(this.STATES.PLAYING);
+					break;
+				case this.STATES.PLAYING:
+					this.addBlock();
+					break;
+				default:
+					alert("chup bc");
+			}
 		});
 
 		document.addEventListener('touchend', e => {
 			// TODO
+			this.setState(this.STATES.PLAYING);
 		});
 	}
 
@@ -56,6 +68,14 @@ class Game {
 
 		this.stage.setCamera(this.blocks.length * 2);
 	}
+
+  setState(state) {
+		const oldState = this.state;
+    this.mainContainer.classList.remove(this.state);
+    this.state = state;
+		this.mainContainer.classList.add(this.state);
+		return oldState;
+  }
 
 	tick() {
 		this.blocks[this.blocks.length - 1].tick();

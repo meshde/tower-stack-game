@@ -3,7 +3,7 @@ const THREE = require('three');
 const config = require('./config');
 
 class Block {
-  constructor() {
+  constructor(lastBlock) {
     this.MOVE_AMOUNT = 12;
 
     this.dimension = {};
@@ -13,12 +13,12 @@ class Block {
     const blockConfig = config.block;
 
     // set the dimensions from the target block, or defaults.
-    this.dimension.width = blockConfig.initWidth;
+    this.dimension.width = (lastBlock) ? lastBlock.dimension.width : blockConfig.initWidth;
     this.dimension.height = blockConfig.initHeight;
-    this.dimension.depth = blockConfig.initDepth;
+    this.dimension.depth = (lastBlock) ? lastBlock.dimension.depth : blockConfig.initDepth;
 
     this.position.x = 0;
-    this.position.y = this.dimension.height;
+    this.position.y = (lastBlock) ? lastBlock.dimension.height + lastBlock.position.y : this.dimension.height;
     this.position.z = 0;
 
     this.colorOffset = Math.round(Math.random() * 100);
