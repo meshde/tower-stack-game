@@ -47,7 +47,7 @@ class Game {
 					this.addBlock();
 					break;
 				default:
-					alert("chup bc");
+          break;
 			}
 		});
 
