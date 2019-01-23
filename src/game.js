@@ -38,10 +38,10 @@ class Game {
 		});
 
 		document.addEventListener('click', e => {
-			// TODO
 			switch (this.state) {
 				case this.STATES.READY:
 					this.setState(this.STATES.PLAYING);
+					this.addBlock();
 					break;
 				case this.STATES.PLAYING:
 					this.addBlock();
