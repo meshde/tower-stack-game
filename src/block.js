@@ -3,7 +3,7 @@ const THREE = require('three');
 const config = require('./config');
 
 class Block {
-  constructor(lastBlock) {
+  constructor(lastBlock, shouldReplace=false) {
     this.MOVE_AMOUNT = 12;
 
     this.dimension = {};
@@ -13,13 +13,40 @@ class Block {
     const blockConfig = config.block;
 
     // set the dimensions from the target block, or defaults.
-    this.dimension.width = (lastBlock) ? lastBlock.dimension.width : blockConfig.initWidth;
-    this.dimension.height = blockConfig.initHeight;
-    this.dimension.depth = (lastBlock) ? lastBlock.dimension.depth : blockConfig.initDepth;
+    let height, width, depth;
+    let x,y,z;
 
-    this.position.x = 0;
-    this.position.y = (lastBlock) ? lastBlock.dimension.height + lastBlock.position.y : this.dimension.height;
-    this.position.z = 0;
+    if (lastBlock){
+      width = lastBlock.dimension.width;
+      height = lastBlock.dimension.height;
+      depth = lastBlock.dimension.depth;
+
+      if (shouldReplace === true) {
+        x = lastBlock.position.x;
+        y = lastBlock.position.y;
+        z = lastBlock.position.z;
+      } else {
+        x = 0;
+        y = lastBlock.position.y + blockConfig.initHeight;
+        z = 0;
+      }
+
+    } else {
+      width = blockConfig.initWidth;
+      height = blockConfig.initHeight;
+      depth = blockConfig.initDepth;
+
+      x = 0;
+      y = height;
+      z = 0;
+    }
+    this.dimension.width = width;
+    this.dimension.height = height;
+    this.dimension.depth = depth;
+
+    this.position.x = x;
+    this.position.y = y;
+    this.position.z = z;
 
     this.colorOffset = Math.round(Math.random() * 100);
 

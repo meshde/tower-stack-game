@@ -58,7 +58,34 @@ class Game {
 	}
 
 	addBlock() {
+
 		let lastBlock = this.blocks[this.blocks.length - 1];
+		const lastToLastBlock = this.blocks[this.blocks.length - 2];
+		
+		if (lastBlock && lastToLastBlock) {
+      const distance = lastBlock.position.x - lastToLastBlock.position.x;
+      let position, dimension;
+
+      dimension = { 
+        ...lastBlock.dimension,
+        width: lastBlock.dimension.width - Math.abs(distance),
+      }
+      if (distance >= 0) {
+        position = lastBlock.position;
+      } else {
+        position = {
+          ...lastBlock.position,
+          x: lastBlock.position.x + Math.abs(distance),
+        }
+      }
+
+      this.blocks.pop();
+      this.stage.remove(lastBlock.mesh);
+      lastBlock = new Block({ dimension, position }, true);
+
+      this.blocks.push(lastBlock);
+      this.stage.add(lastBlock.mesh);
+		}
 
 		this.scoreContainer.innerHTML = String(this.blocks.length - 1);
 
