@@ -1,5 +1,5 @@
 const Stage = require('./stage');
-const Block = require('./block');
+const { NormalBlock: Block, FallingBlock } = require('./block');
 
 class Game {
   constructor() {
@@ -12,6 +12,7 @@ class Game {
     }
 
     this.blocks = [];
+    this.fallingBlocks = [];
     this.state = this.STATES.LOADING;
 
     this.stage = new Stage();
@@ -65,18 +66,33 @@ class Game {
     if (lastBlock && lastToLastBlock) {
       const distance = lastBlock.position.x - lastToLastBlock.position.x;
       let position, dimension;
+      let positionFalling, dimensionFalling;
 
       dimension = { 
         ...lastBlock.dimension,
         width: lastBlock.dimension.width - Math.abs(distance),
       }
+
+      dimensionFalling = {
+        ...lastBlock.dimension,
+        width: Math.abs(distance),
+      }
+
       if (distance >= 0) {
         position = lastBlock.position;
+        positionFalling = {
+          ...lastBlock.position,
+          x: lastBlock.position.x + dimension.width,
+        };
       } else {
         position = {
           ...lastBlock.position,
           x: lastBlock.position.x + Math.abs(distance),
         }
+        positionFalling = {
+          ...lastBlock.position,
+          x: lastBlock.position.x - Math.abs(distance),
+        };
       }
 
       this.blocks.pop();
@@ -85,6 +101,14 @@ class Game {
 
       this.blocks.push(lastBlock);
       this.stage.add(lastBlock.mesh);
+
+      const fallingBlock = new FallingBlock({
+        dimension: dimensionFalling,
+        position: positionFalling
+      });
+
+      this.fallingBlocks.push(fallingBlock);
+      this.stage.add(fallingBlock.mesh);
     }
 
     this.scoreContainer.innerHTML = String(this.blocks.length - 1);
@@ -106,6 +130,15 @@ class Game {
 
   tick() {
     this.blocks[this.blocks.length - 1].tick();
+    this.fallingBlocks.forEach(block => block.tick());
+    this.fallingBlocks = this.fallingBlocks.filter(block => {
+      if (block.position.y > 0) {
+        return true;
+      } else {
+        this.stage.remove(block.mesh);
+        return false;
+      }
+    });
     this.stage.render();
     requestAnimationFrame(() => {this.tick()});
   }

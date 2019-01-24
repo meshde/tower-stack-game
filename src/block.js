@@ -71,6 +71,13 @@ class Block {
     this.mesh.position.set(this.position.x,
       this.position.y, this.position.z);
   }
+}
+
+
+class NormalBlock extends Block {
+  constructor(lastBlock, shouldReplace=false) {
+    super(lastBlock, shouldReplace);
+  }
 
   reverseDirection() {
     this.direction = this.direction > 0 ? this.speed : Math.abs(this.speed);
@@ -86,4 +93,22 @@ class Block {
   }
 }
 
-module.exports = Block;
+class FallingBlock extends Block {
+  constructor(lastBlock) {
+    super(lastBlock, true);
+    this.speed *= 2;
+    this.direction = this.speed;
+  }
+
+  tick() {
+    let value = this.position.y;
+    this.position.y -= Math.abs(this.direction);
+    this.mesh.rotation.z += this.direction/6;
+    this.mesh.position.y = this.position.y;
+  }
+}
+
+module.exports = {
+  NormalBlock,
+  FallingBlock,
+}
