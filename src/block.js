@@ -103,6 +103,7 @@ class FallingBlock extends Block {
   tick() {
     let value = this.position.y;
     this.position.y -= Math.abs(this.direction);
+    this.mesh.rotation.z += this.direction/6;
     this.mesh.position.y = this.position.y;
   }
 }
