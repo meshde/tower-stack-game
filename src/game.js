@@ -2,7 +2,7 @@ const Stage = require('./stage');
 const Block = require('./block');
 
 class Game {
-	constructor() {
+  constructor() {
     this.STATES = {
       LOADING: 'loading',
       PLAYING: 'playing',
@@ -14,15 +14,15 @@ class Game {
     this.blocks = [];
     this.state = this.STATES.LOADING;
 
-		this.stage = new Stage();
+    this.stage = new Stage();
 
-		this.mainContainer = document.getElementById('container');
-		this.scoreContainer = document.getElementById('score');
-		this.startButton = document.getElementById('start-button');
-		this.instructions = document.getElementById('instructions');
-		this.scoreContainer.innerHTML = '0';
+    this.mainContainer = document.getElementById('container');
+    this.scoreContainer = document.getElementById('score');
+    this.startButton = document.getElementById('start-button');
+    this.instructions = document.getElementById('instructions');
+    this.scoreContainer.innerHTML = '0';
 
-		this.addBlock();
+    this.addBlock();
     this.tick();
 
     for (let key in this.STATES) {
@@ -30,39 +30,39 @@ class Game {
     }
     this.setState(this.STATES.READY);
 
-		document.addEventListener('keydown', e => {
-			if(e.keyCode === 32) { // Enter
-				// TODO
-				this.setState(this.STATES.PLAYING);
+    document.addEventListener('keydown', e => {
+      if(e.keyCode === 32) { // Enter
+        // TODO
+        this.setState(this.STATES.PLAYING);
       }
-		});
+    });
 
-		document.addEventListener('click', e => {
-			switch (this.state) {
-				case this.STATES.READY:
-					this.setState(this.STATES.PLAYING);
-					this.addBlock();
-					break;
-				case this.STATES.PLAYING:
-					this.addBlock();
-					break;
-				default:
+    document.addEventListener('click', e => {
+      switch (this.state) {
+        case this.STATES.READY:
+          this.setState(this.STATES.PLAYING);
+          this.addBlock();
           break;
-			}
-		});
+        case this.STATES.PLAYING:
+          this.addBlock();
+          break;
+        default:
+          break;
+      }
+    });
 
-		document.addEventListener('touchend', e => {
-			// TODO
-			this.setState(this.STATES.PLAYING);
-		});
-	}
+    document.addEventListener('touchend', e => {
+      // TODO
+      this.setState(this.STATES.PLAYING);
+    });
+  }
 
-	addBlock() {
+  addBlock() {
 
-		let lastBlock = this.blocks[this.blocks.length - 1];
-		const lastToLastBlock = this.blocks[this.blocks.length - 2];
-		
-		if (lastBlock && lastToLastBlock) {
+    let lastBlock = this.blocks[this.blocks.length - 1];
+    const lastToLastBlock = this.blocks[this.blocks.length - 2];
+    
+    if (lastBlock && lastToLastBlock) {
       const distance = lastBlock.position.x - lastToLastBlock.position.x;
       let position, dimension;
 
@@ -85,30 +85,30 @@ class Game {
 
       this.blocks.push(lastBlock);
       this.stage.add(lastBlock.mesh);
-		}
+    }
 
-		this.scoreContainer.innerHTML = String(this.blocks.length - 1);
+    this.scoreContainer.innerHTML = String(this.blocks.length - 1);
 
-		const newBlock = new Block(lastBlock);
-		this.stage.add(newBlock.mesh);
-		this.blocks.push(newBlock);
+    const newBlock = new Block(lastBlock);
+    this.stage.add(newBlock.mesh);
+    this.blocks.push(newBlock);
 
-		this.stage.setCamera(this.blocks.length * 2);
-	}
-
-  setState(state) {
-		const oldState = this.state;
-    this.mainContainer.classList.remove(this.state);
-    this.state = state;
-		this.mainContainer.classList.add(this.state);
-		return oldState;
+    this.stage.setCamera(this.blocks.length * 2);
   }
 
-	tick() {
-		this.blocks[this.blocks.length - 1].tick();
-		this.stage.render();
-		requestAnimationFrame(() => {this.tick()});
-	}
+  setState(state) {
+    const oldState = this.state;
+    this.mainContainer.classList.remove(this.state);
+    this.state = state;
+    this.mainContainer.classList.add(this.state);
+    return oldState;
+  }
+
+  tick() {
+    this.blocks[this.blocks.length - 1].tick();
+    this.stage.render();
+    requestAnimationFrame(() => {this.tick()});
+  }
 }
 
 module.exports = Game;
