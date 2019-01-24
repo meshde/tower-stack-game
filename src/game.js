@@ -59,7 +59,6 @@ class Game {
   }
 
   addBlock() {
-
     let lastBlock = this.blocks[this.blocks.length - 1];
     const lastToLastBlock = this.blocks[this.blocks.length - 2];
     
@@ -68,10 +67,17 @@ class Game {
       let position, dimension;
       let positionFalling, dimensionFalling;
       const { color } = lastBlock;
+      const width = lastBlock.dimension.width - Math.abs(distance);
+
+      if (width <= 0) {
+        this.stage.remove(lastBlock.mesh);
+        this.setState(this.STATES.ENDED);
+        return;
+      }
 
       dimension = { 
         ...lastBlock.dimension,
-        width: lastBlock.dimension.width - Math.abs(distance),
+        width,
       }
 
       dimensionFalling = {
