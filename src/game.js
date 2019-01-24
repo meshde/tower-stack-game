@@ -67,6 +67,7 @@ class Game {
       const distance = lastBlock.position.x - lastToLastBlock.position.x;
       let position, dimension;
       let positionFalling, dimensionFalling;
+      const { color } = lastBlock;
 
       dimension = { 
         ...lastBlock.dimension,
@@ -97,14 +98,15 @@ class Game {
 
       this.blocks.pop();
       this.stage.remove(lastBlock.mesh);
-      lastBlock = new Block({ dimension, position }, true);
+      lastBlock = new Block({ dimension, position, color }, true);
 
       this.blocks.push(lastBlock);
       this.stage.add(lastBlock.mesh);
 
       const fallingBlock = new FallingBlock({
         dimension: dimensionFalling,
-        position: positionFalling
+        position: positionFalling,
+        color,
       });
 
       this.fallingBlocks.push(fallingBlock);

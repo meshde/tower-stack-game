@@ -7,8 +7,8 @@ class Block {
     this.MOVE_AMOUNT = 12;
 
     this.dimension = {};
-
     this.position = {};
+    let color = null;
 
     const blockConfig = config.block;
 
@@ -25,6 +25,8 @@ class Block {
         x = lastBlock.position.x;
         y = lastBlock.position.y;
         z = lastBlock.position.z;
+
+        color = lastBlock.color.getHex();
       } else {
         x = 0;
         y = lastBlock.position.y + blockConfig.initHeight;
@@ -51,7 +53,9 @@ class Block {
     this.colorOffset = Math.round(Math.random() * 100);
 
     // set color
-    this.color = new THREE.Color(blockConfig.initColor);
+    this.color = new THREE.Color(
+      (color === null) ? (Math.random() * 0xffffff) : color
+    );
 
     // set direction
     let speed = blockConfig.initSpeed + blockConfig.acceleration;
