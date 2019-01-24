@@ -1,5 +1,5 @@
 const Stage = require('./stage');
-const Block = require('./block');
+const { NormalBlock: Block, FallingBlock } = require('./block');
 
 class Game {
   constructor() {
