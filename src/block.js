@@ -9,6 +9,7 @@ class Block {
     this.dimension = {};
     this.position = {};
     let color = null;
+    let axis = null;
 
     const blockConfig = config.block;
 
@@ -27,6 +28,7 @@ class Block {
         z = lastBlock.position.z;
 
         color = lastBlock.color.getHex();
+        axis = lastBlock.axis;
       } else {
         x = 0;
         y = lastBlock.position.y + blockConfig.initHeight;
@@ -49,6 +51,12 @@ class Block {
     this.position.x = x;
     this.position.y = y;
     this.position.z = z;
+
+    if (axis === null) {
+      let random = Math.random();
+      axis = random < 0.5 ? 'x': 'z';
+    }
+    this.axis = axis;
 
     this.colorOffset = Math.round(Math.random() * 100);
 
@@ -75,6 +83,21 @@ class Block {
     this.mesh.position.set(this.position.x,
       this.position.y, this.position.z);
   }
+
+  getAxis() {
+    let dimensionAlongAxis = null;
+    switch (this.axis) {
+      case 'x':
+        dimensionAlongAxis = 'width';
+        break;
+      case 'z':
+        dimensionAlongAxis = 'depth';
+    }
+    return {
+      axis: this.axis,
+      dimensionAlongAxis,
+    }
+  }
 }
 
 
@@ -88,12 +111,12 @@ class NormalBlock extends Block {
   }
 
   tick() {
-    let value = this.position.x;
+    let value = this.position[this.axis];
     if (value > this.MOVE_AMOUNT || value < -this.MOVE_AMOUNT) {
       this.reverseDirection();
     }
-    this.position.x += this.direction;
-    this.mesh.position.x = this.position.x;
+    this.position[this.axis] += this.direction;
+    this.mesh.position[this.axis] = this.position[this.axis];
   }
 }
 
