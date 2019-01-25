@@ -3,7 +3,7 @@ const THREE = require('three');
 const config = require('./config');
 
 class Block {
-  constructor(lastBlock, shouldReplace=false) {
+  constructor(lastBlock=null, shouldReplace=false) {
     this.MOVE_AMOUNT = 12;
 
     this.dimension = {};
@@ -22,17 +22,16 @@ class Block {
       height = lastBlock.dimension.height;
       depth = lastBlock.dimension.depth;
 
+      x = lastBlock.position.x;
+      z = lastBlock.position.z;
+
       if (shouldReplace === true) {
-        x = lastBlock.position.x;
         y = lastBlock.position.y;
-        z = lastBlock.position.z;
 
         color = lastBlock.color.getHex();
         axis = lastBlock.axis;
       } else {
-        x = 0;
         y = lastBlock.position.y + blockConfig.initHeight;
-        z = 0;
       }
 
     } else {
@@ -57,6 +56,10 @@ class Block {
       axis = random < 0.5 ? 'x': 'z';
     }
     this.axis = axis;
+
+    if (lastBlock && !shouldReplace) {
+      this.position[axis] = ((Math.random() > 0.5) ? 1 : -1) * this.MOVE_AMOUNT;
+    }
 
     this.colorOffset = Math.round(Math.random() * 100);
 
