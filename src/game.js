@@ -130,7 +130,9 @@ class Game {
   }
 
   tick() {
-    this.blocks[this.blocks.length - 1].tick();
+    if (this.blocks.length > 1) {
+      this.blocks[this.blocks.length - 1].tick();
+    }
     this.fallingBlocks.forEach(block => block.tick());
     this.fallingBlocks = this.fallingBlocks.filter(block => {
       if (block.position.y > 0) {
