@@ -97,7 +97,7 @@ class Game {
 
       this.blocks.pop();
       this.stage.remove(lastBlock.mesh);
-      lastBlock = new Block({ dimension, position, color }, true);
+      lastBlock = new Block({ dimension, position, color, axis }, true);
 
       this.blocks.push(lastBlock);
       this.stage.add(lastBlock.mesh);
