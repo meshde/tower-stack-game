@@ -9,6 +9,7 @@ class Block {
     this.dimension = {};
     this.position = {};
     let color = null;
+    let axis = null;
 
     const blockConfig = config.block;
 
@@ -27,10 +28,12 @@ class Block {
         z = lastBlock.position.z;
 
         color = lastBlock.color.getHex();
+        axis = lastBlock.axis;
       } else {
         x = 0;
         y = lastBlock.position.y + blockConfig.initHeight;
         z = 0;
+        axis = (lastBlock.axis === 'x') ? 'z' : 'x';
       }
 
     } else {
@@ -41,6 +44,8 @@ class Block {
       x = 0;
       y = height;
       z = 0;
+
+      axis = 'x';
     }
     this.dimension.width = width;
     this.dimension.height = height;
@@ -50,7 +55,7 @@ class Block {
     this.position.y = y;
     this.position.z = z;
 
-    this.axis = 'x';
+    this.axis = axis;
 
     this.colorOffset = Math.round(Math.random() * 100);
 
