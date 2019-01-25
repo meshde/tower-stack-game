@@ -50,6 +50,8 @@ class Block {
     this.position.y = y;
     this.position.z = z;
 
+    this.axis = 'x';
+
     this.colorOffset = Math.round(Math.random() * 100);
 
     // set color
@@ -75,6 +77,21 @@ class Block {
     this.mesh.position.set(this.position.x,
       this.position.y, this.position.z);
   }
+
+  getAxis() {
+    let dimensionAlongAxis = null;
+    switch (this.axis) {
+      case 'x':
+        dimensionAlongAxis = 'width';
+        break;
+      case 'z':
+        dimensionAlongAxis = 'depth';
+    }
+    return {
+      axis: this.axis,
+      dimensionAlongAxis,
+    }
+  }
 }
 
 
@@ -88,12 +105,12 @@ class NormalBlock extends Block {
   }
 
   tick() {
-    let value = this.position.x;
+    let value = this.position[this.axis];
     if (value > this.MOVE_AMOUNT || value < -this.MOVE_AMOUNT) {
       this.reverseDirection();
     }
-    this.position.x += this.direction;
-    this.mesh.position.x = this.position.x;
+    this.position[this.axis] += this.direction;
+    this.mesh.position[this.axis] = this.position[this.axis];
   }
 }
 

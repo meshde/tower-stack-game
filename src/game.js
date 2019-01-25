@@ -63,43 +63,36 @@ class Game {
     const lastToLastBlock = this.blocks[this.blocks.length - 2];
     
     if (lastBlock && lastToLastBlock) {
-      const distance = lastBlock.position.x - lastToLastBlock.position.x;
+      const { axis, dimensionAlongAxis } = lastBlock.getAxis();
+      const distance = lastBlock.position[axis] - lastToLastBlock.position[axis];
       let position, dimension;
       let positionFalling, dimensionFalling;
       const { color } = lastBlock;
-      const width = lastBlock.dimension.width - Math.abs(distance);
+      const newLength = lastBlock.dimension[dimensionAlongAxis] - Math.abs(distance);
 
-      if (width <= 0) {
+      if (newLength <= 0) {
         this.stage.remove(lastBlock.mesh);
         this.setState(this.STATES.ENDED);
         return;
       }
 
-      dimension = { 
-        ...lastBlock.dimension,
-        width,
-      }
+      dimension = { ...lastBlock.dimension }
+      dimension[dimensionAlongAxis] = newLength;
 
-      dimensionFalling = {
-        ...lastBlock.dimension,
-        width: Math.abs(distance),
-      }
+      dimensionFalling = { ...lastBlock.dimension }
+      dimensionFalling[dimensionAlongAxis] = Math.abs(distance)
 
       if (distance >= 0) {
         position = lastBlock.position;
-        positionFalling = {
-          ...lastBlock.position,
-          x: lastBlock.position.x + dimension.width,
-        };
+
+        positionFalling = { ...lastBlock.position };
+        positionFalling[axis] = lastBlock.position[axis] + newLength;
       } else {
-        position = {
-          ...lastBlock.position,
-          x: lastBlock.position.x + Math.abs(distance),
-        }
-        positionFalling = {
-          ...lastBlock.position,
-          x: lastBlock.position.x - Math.abs(distance),
-        };
+        position = { ...lastBlock.position };
+        position[axis] = lastBlock.position[axis] + Math.abs(distance);
+
+        positionFalling = { ...lastBlock.position };
+        positionFalling[axis] = lastBlock.position[axis] - Math.abs(distance);
       }
 
       this.blocks.pop();
