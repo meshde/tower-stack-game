@@ -33,7 +33,6 @@ class Block {
         x = 0;
         y = lastBlock.position.y + blockConfig.initHeight;
         z = 0;
-        axis = (lastBlock.axis === 'x') ? 'z' : 'x';
       }
 
     } else {
@@ -44,8 +43,6 @@ class Block {
       x = 0;
       y = height;
       z = 0;
-
-      axis = 'x';
     }
     this.dimension.width = width;
     this.dimension.height = height;
@@ -55,6 +52,10 @@ class Block {
     this.position.y = y;
     this.position.z = z;
 
+    if (axis === null) {
+      let random = Math.random();
+      axis = random < 0.5 ? 'x': 'z';
+    }
     this.axis = axis;
 
     this.colorOffset = Math.round(Math.random() * 100);
