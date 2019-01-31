@@ -47,6 +47,15 @@ class Game {
         case this.STATES.PLAYING:
           this.addBlock();
           break;
+        case this.STATES.ENDED:
+          this.blocks.forEach(block => {
+            this.stage.remove(block.mesh);
+          })
+          this.blocks = [];
+          this.scoreContainer.innerHTML = '0';
+          this.addBlock();
+          this.setState(this.STATES.READY);
+          break;
         default:
           break;
       }
