@@ -140,7 +140,7 @@ class Game {
 
   tick() {
     if (this.blocks.length > 1) {
-      this.blocks[this.blocks.length - 1].tick();
+      this.blocks[this.blocks.length - 1].tick(this.blocks.length/10);
     }
     this.fallingBlocks.forEach(block => block.tick());
     this.fallingBlocks = this.fallingBlocks.filter(block => {

@@ -113,12 +113,12 @@ class NormalBlock extends Block {
     this.direction = this.direction > 0 ? this.speed : Math.abs(this.speed);
   }
 
-  tick() {
+  tick(speed=0) {
     let value = this.position[this.axis];
     if (value > this.MOVE_AMOUNT || value < -this.MOVE_AMOUNT) {
       this.reverseDirection();
     }
-    this.position[this.axis] += this.direction;
+    this.position[this.axis] += this.direction + (this.direction * speed);
     this.mesh.position[this.axis] = this.position[this.axis];
   }
 }
