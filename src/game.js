@@ -23,6 +23,8 @@ class Game {
     this.instructions = document.getElementById('instructions');
     this.scoreContainer.innerHTML = '0';
 
+    this.music = document.getElementById('music')
+
     this.addBlock();
     this.tick();
 
@@ -32,39 +34,42 @@ class Game {
     this.setState(this.STATES.READY);
 
     document.addEventListener('keydown', e => {
-      if(e.keyCode === 32) { // Enter
-        // TODO
-        this.setState(this.STATES.PLAYING);
+      if(e.keyCode === 32) { // Space
+        this.handleEvent();
       }
     });
 
     document.addEventListener('click', e => {
-      switch (this.state) {
-        case this.STATES.READY:
-          this.setState(this.STATES.PLAYING);
-          this.addBlock();
-          break;
-        case this.STATES.PLAYING:
-          this.addBlock();
-          break;
-        case this.STATES.ENDED:
-          this.blocks.forEach(block => {
-            this.stage.remove(block.mesh);
-          })
-          this.blocks = [];
-          this.scoreContainer.innerHTML = '0';
-          this.addBlock();
-          this.setState(this.STATES.READY);
-          break;
-        default:
-          break;
-      }
+      this.handleEvent();
     });
 
     document.addEventListener('touchend', e => {
-      // TODO
-      this.setState(this.STATES.PLAYING);
+      this.handleEvent();
     });
+  }
+
+  handleEvent() {
+    switch (this.state) {
+      case this.STATES.READY:
+        this.setState(this.STATES.PLAYING);
+        this.music.play();
+        this.addBlock();
+        break;
+      case this.STATES.PLAYING:
+        this.addBlock();
+        break;
+      case this.STATES.ENDED:
+        this.blocks.forEach(block => {
+          this.stage.remove(block.mesh);
+        })
+        this.blocks = [];
+        this.scoreContainer.innerHTML = '0';
+        this.addBlock();
+        this.setState(this.STATES.READY);
+        break;
+      default:
+        break;
+    }
   }
 
   addBlock() {
@@ -82,6 +87,7 @@ class Game {
       if (newLength <= 0) {
         this.stage.remove(lastBlock.mesh);
         this.setState(this.STATES.ENDED);
+        this.music.pause();
         return;
       }
 
