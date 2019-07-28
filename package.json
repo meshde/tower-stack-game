@@ -14,10 +14,10 @@
     "acorn": "^6.0.5",
     "browserify": "^16.2.3",
     "gsap": "^2.0.2",
-    "serve": "^10.1.1",
+    "serve": "^10.1.2",
     "three": "^0.99.0"
   },
   "devDependencies": {
-    "budo": "^11.5.0"
+    "budo": "^11.6.2"
   }
 }
