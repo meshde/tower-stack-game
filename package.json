@@ -13,7 +13,7 @@
   "dependencies": {
     "acorn": "^6.4.1",
     "browserify": "^16.2.3",
-    "gsap": "^2.0.2",
+    "gsap": "^3.6.0",
     "serve": "^10.1.2",
     "three": "^0.99.0"
   },
