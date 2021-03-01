@@ -15,7 +15,7 @@
     "browserify": "^16.2.3",
     "gsap": "^2.0.2",
     "serve": "^10.1.2",
-    "three": "^0.99.0"
+    "three": "^0.125.0"
   },
   "devDependencies": {
     "budo": "^11.6.2"
